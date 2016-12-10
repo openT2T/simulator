@@ -1,0 +1,87 @@
+{
+  "$type": "ContosoThingsCore.Hub, ContosoThingsCore",
+  "Id": "a2100630-11aa-4737-a298-ba7198d3c16e",
+  "Name": "Contoso Test Hub",
+  "Things": {
+    "$type": "System.Collections.Generic.List`1[[ContosoThingsCore.ThingsBase, ContosoThingsCore]], mscorlib",
+    "$values": [
+      {
+        "$type": "ContosoThingsCore.ContosoSwitch, ContosoThingsCore",
+        "Id": "ebdd88f7-2484-460b-8fa5-1734aa679b8f",
+        "Name": "Humidifier",
+        "ThingsType": 0,
+        "Services": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ContosoThingsCore.IThingService, ContosoThingsCore]], mscorlib",
+          "Switch": {
+            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
+            "Name": "Switch",
+            "Value": false,
+            "DependentServiceNameValues": {
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib"
+            }
+          }
+        }
+      },
+      {
+        "$type": "ContosoThingsCore.ContosoLight, ContosoThingsCore",
+        "Id": "40105eda-d44a-4d46-aeb8-9708912d8b85",
+        "Name": "Family Lamp 1",
+        "ThingsType": 1,
+        "Services": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ContosoThingsCore.IThingService, ContosoThingsCore]], mscorlib",
+          "Switch": {
+            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
+            "Name": "Switch",
+            "Value": true,
+            "DependentServiceNameValues": {
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib"
+            }
+          }
+        }
+      },
+      {
+        "$type": "ContosoThingsCore.ContosoLight, ContosoThingsCore",
+        "Id": "fa7dce39-6c7d-49fc-80ff-1e5011b5396a",
+        "Name": "Family Lamp 2",
+        "ThingsType": 1,
+        "Services": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ContosoThingsCore.IThingService, ContosoThingsCore]], mscorlib",
+          "Switch": {
+            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
+            "Name": "Switch",
+            "Value": false,
+            "DependentServiceNameValues": {
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib"
+            }
+          }
+        }
+      },
+      {
+        "$type": "ContosoThingsCore.ContosoLightDimmable, ContosoThingsCore",
+        "Id": "a2af4c16-09fc-4336-9172-94c57f9be3d6",
+        "Name": "Bedroom Lamp 1",
+        "ThingsType": 2,
+        "Services": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ContosoThingsCore.IThingService, ContosoThingsCore]], mscorlib",
+          "Switch": {
+            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
+            "Name": "Switch",
+            "Value": true,
+            "DependentServiceNameValues": {
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib"
+            }
+          },
+          "Dim": {
+            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
+            "Name": "Dim",
+            "Value": 18,
+            "DependentServiceNameValues": {
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib",
+              "Switch": null
+            }
+          }
+        }
+      }
+    ]
+  }
+}

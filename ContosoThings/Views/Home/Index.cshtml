@@ -1,0 +1,18 @@
+﻿@using System.Web.Optimization
+@{
+    ViewBag.Title = "Home";
+}
+
+<h2>Home</h2>
+
+<div ng-app="mainApp" ng-controller="MainCtrl">
+    <h3>Homes</h3>
+
+    <ul ng-if="homes">
+        <li ng-repeat="home in homes">{{home.Name}} ({{home.Things.length}})</li>
+    </ul>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/app")
+}
