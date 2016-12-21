@@ -5,7 +5,7 @@ function ($scope, $http, $window, $q, $location) {
     $scope.homes = undefined;
 
     $scope.loadHomes = function () {
-        var url = "/api/HomesApi/get";
+        var url = "/api/HomesApi";
         $http.get(url).success(function (homes) {
             $scope.homes = homes;
 

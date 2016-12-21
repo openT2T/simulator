@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace ContosoThingsCore
 {
@@ -38,18 +39,29 @@ namespace ContosoThingsCore
                 throw new Exception("No device found");
             }
 
-            IThingService serviceToControl = FindService(deviceToControl, serviceName);
+            SetProperty(deviceToControl, serviceName, value);
 
-            if (serviceToControl == null)
+            //IThingService serviceToControl = FindService(deviceToControl, serviceName);
+
+            //if (serviceToControl == null)
+            //{
+            //    throw new Exception("No service found on device");
+            //}
+
+            //serviceToControl.Value = value;
+
+            //if (serviceToControl.DependentServiceNameValues.Count > 0)
+            //{
+            //    // update dependent services
+            //}
+        }
+
+        private void SetProperty(ThingsBase deviceToControl, string serviceName, object value)
+        {
+            PropertyInfo prop = deviceToControl.GetType().GetProperty(serviceName, BindingFlags.Public | BindingFlags.Instance);
+            if (null != prop && prop.CanWrite)
             {
-                throw new Exception("No service found on device");
-            }
-
-            serviceToControl.Value = value;
-
-            if (serviceToControl.DependentServiceNameValues.Count > 0)
-            {
-                // update dependent services
+                prop.SetValue(deviceToControl, value, null);
             }
         }
 

@@ -47,6 +47,7 @@ namespace ContosoThingsCore
     public class ContosoSwitch : ThingsBase
     {
         public ContosoSwitch() { }
+        public bool Switch { get; set; }
         public ContosoSwitch(string name) 
         {
             ThingsType = ThingsType.Switch;
@@ -59,6 +60,7 @@ namespace ContosoThingsCore
     public class ContosoLight : ContosoSwitch
     {
         public ContosoLight() : base() { }
+        
         public ContosoLight(string name) : base(name)
         {
             ThingsType = ThingsType.Light;
@@ -68,6 +70,9 @@ namespace ContosoThingsCore
     public class ContosoLightDimmable : ContosoLight
     {
         public ContosoLightDimmable() : base() { }
+
+        public int Dim { get; set; }
+
         public ContosoLightDimmable(string name) : base(name)
         {
             ThingsType = ThingsType.LightDimmable;
