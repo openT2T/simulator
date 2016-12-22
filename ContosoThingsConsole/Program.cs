@@ -30,14 +30,14 @@ namespace ContosoThingsConsole
             string saveString = h.Save();
             Console.WriteLine(saveString);
             Console.WriteLine(h.ToString());
-            //Console.WriteLine("------------------");
-            ////Console.WriteLine(h.ToString());
+            Console.WriteLine("------------------");
+            //Console.WriteLine(h.ToString());
 
-            //File.WriteAllText("home.json", saveString);
+            File.WriteAllText("home.json", saveString);
 
-            //Hub h2 = Hub.Load(saveString);
+            Hub h2 = Hub.Load(saveString);
 
-            //Console.WriteLine(h2);
+            Console.WriteLine(h2);
 
 
             Console.WriteLine("done");

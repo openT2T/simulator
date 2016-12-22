@@ -20,14 +20,11 @@ namespace ContosoThingsCore
         public ThingsBase()
         {
             Id = Guid.NewGuid().ToString();
-            Services = new Dictionary<string, IThingService>();
         }
 
         public string Id { get; set; }
         public string Name { get; set; }
         public ThingsType ThingsType { get; set; }
-
-        public Dictionary<string, IThingService> Services { get; }
 
         public override string ToString()
         {
@@ -35,11 +32,6 @@ namespace ContosoThingsCore
             sb.Append("Id     : ").AppendLine(Id);
             sb.Append("Name   : ").AppendLine(Name);
             sb.Append("Type   : ").AppendLine(ThingsType.ToString());
-            sb.AppendLine("Services");
-            foreach (IThingService s in Services.Values)
-            {
-                sb.AppendFormat("{0,-7}: ", s.Name).AppendLine(s.Value.ToString());
-            }
             return sb.ToString();
         }
     }
@@ -52,9 +44,16 @@ namespace ContosoThingsCore
         {
             ThingsType = ThingsType.Switch;
             this.Name = name;
-
-            Services.Add(AllServices.SwitchServiceName, AllServices.SwitchService);
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(base.ToString());
+            sb.Append("Switch : ").AppendLine(Switch.ToString());
+            return sb.ToString();
+        }
+
     }
 
     public class ContosoLight : ContosoSwitch
@@ -71,24 +70,37 @@ namespace ContosoThingsCore
     {
         public ContosoLightDimmable() : base() { }
 
-        public int Dim { get; set; }
+        public Int64 Dim { get; set; }
 
         public ContosoLightDimmable(string name) : base(name)
         {
             ThingsType = ThingsType.LightDimmable;
+        }
 
-            Services.Add(AllServices.DimServiceName, AllServices.DimService);
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(base.ToString());
+            sb.Append("Dim    : ").AppendLine(Dim.ToString());
+            return sb.ToString();
         }
     }
 
     public class ContosoLightColor : ContosoLightDimmable
     {
         public ContosoLightColor() : base() { }
+        public string ColorRGB { get; set; }
         public ContosoLightColor(string name) : base(name)
         {
             ThingsType = ThingsType.LightColor;
+        }
 
-            Services.Add(AllServices.ColorRGBServiceName, AllServices.ColorRGBService);
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(base.ToString());
+            sb.Append("Color : ").AppendLine(ColorRGB);
+            return sb.ToString();
         }
     }
 

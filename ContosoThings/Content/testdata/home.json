@@ -1,86 +1,38 @@
 {
   "$type": "ContosoThingsCore.Hub, ContosoThingsCore",
-  "Id": "a2100630-11aa-4737-a298-ba7198d3c16e",
+  "Id": "c5e4d035-a119-4de9-9cd6-6af870630080",
   "Name": "Contoso Test Hub",
   "Things": {
     "$type": "System.Collections.Generic.List`1[[ContosoThingsCore.ThingsBase, ContosoThingsCore]], mscorlib",
     "$values": [
       {
         "$type": "ContosoThingsCore.ContosoSwitch, ContosoThingsCore",
-        "Id": "ebdd88f7-2484-460b-8fa5-1734aa679b8f",
+        "Switch": false,
+        "Id": "890b7f97-0a69-4bb2-a9a8-74923c777710",
         "Name": "Humidifier",
-        "ThingsType": 0,
-        "Services": {
-          "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ContosoThingsCore.IThingService, ContosoThingsCore]], mscorlib",
-          "Switch": {
-            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
-            "Name": "Switch",
-            "Value": false,
-            "DependentServiceNameValues": {
-              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib"
-            }
-          }
-        }
+        "ThingsType": 0
       },
       {
         "$type": "ContosoThingsCore.ContosoLight, ContosoThingsCore",
-        "Id": "40105eda-d44a-4d46-aeb8-9708912d8b85",
+        "Switch": true,
+        "Id": "aee8e533-c6b8-48ee-b42b-afd794b9889d",
         "Name": "Family Lamp 1",
-        "ThingsType": 1,
-        "Services": {
-          "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ContosoThingsCore.IThingService, ContosoThingsCore]], mscorlib",
-          "Switch": {
-            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
-            "Name": "Switch",
-            "Value": true,
-            "DependentServiceNameValues": {
-              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib"
-            }
-          }
-        }
+        "ThingsType": 1
       },
       {
         "$type": "ContosoThingsCore.ContosoLight, ContosoThingsCore",
-        "Id": "fa7dce39-6c7d-49fc-80ff-1e5011b5396a",
+        "Switch": false,
+        "Id": "0e8bf1e3-182f-467b-a101-18c554b2944e",
         "Name": "Family Lamp 2",
-        "ThingsType": 1,
-        "Services": {
-          "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ContosoThingsCore.IThingService, ContosoThingsCore]], mscorlib",
-          "Switch": {
-            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
-            "Name": "Switch",
-            "Value": false,
-            "DependentServiceNameValues": {
-              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib"
-            }
-          }
-        }
+        "ThingsType": 1
       },
       {
         "$type": "ContosoThingsCore.ContosoLightDimmable, ContosoThingsCore",
-        "Id": "a2af4c16-09fc-4336-9172-94c57f9be3d6",
+        "Dim": 18,
+        "Switch": true,
+        "Id": "468ae65f-1116-4c91-b5db-c6197112d87c",
         "Name": "Bedroom Lamp 1",
-        "ThingsType": 2,
-        "Services": {
-          "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ContosoThingsCore.IThingService, ContosoThingsCore]], mscorlib",
-          "Switch": {
-            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
-            "Name": "Switch",
-            "Value": true,
-            "DependentServiceNameValues": {
-              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib"
-            }
-          },
-          "Dim": {
-            "$type": "ContosoThingsCore.ThingService, ContosoThingsCore",
-            "Name": "Dim",
-            "Value": 18,
-            "DependentServiceNameValues": {
-              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Object, mscorlib]], mscorlib",
-              "Switch": null
-            }
-          }
-        }
+        "ThingsType": 2
       }
     ]
   }

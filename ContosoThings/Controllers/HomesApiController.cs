@@ -26,6 +26,20 @@ namespace ContosoThings.Controllers
             Hub h = HomeManager.Instance.GetHub(id);
             return h.GetServiceValue(deviceId, serviceName);
         }
-        
+
+        [HttpPost]
+        public object SetValue(HttpRequestMessage request)
+        {
+            string body = request.Content.ReadAsStringAsync().Result;
+            dynamic toChange = Newtonsoft.Json.JsonConvert.DeserializeObject(body);
+
+            string t = String.Format("home {0}, device {1}, setting {2} to {3}", toChange.id, toChange.deviceId, toChange.propertyName, toChange.value);
+
+            System.Diagnostics.Debug.WriteLine(t);
+            
+            Hub h = HomeManager.Instance.GetHub(toChange.id.ToString());
+            ThingsBase newThing = h.Control(toChange.deviceId.ToString(), toChange.propertyName.ToString(), toChange.value.Value);
+            return newThing;
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace ContosoThingsCore
         public string Name { get; set; }
         public List<ThingsBase> Things { get; set; }
 
-        public void Control(string deviceId, string serviceName, object value)
+        public ThingsBase Control(string deviceId, string serviceName, object value)
         {
             ThingsBase deviceToControl = FindDevice(deviceId);
 
@@ -41,19 +41,7 @@ namespace ContosoThingsCore
 
             SetProperty(deviceToControl, serviceName, value);
 
-            //IThingService serviceToControl = FindService(deviceToControl, serviceName);
-
-            //if (serviceToControl == null)
-            //{
-            //    throw new Exception("No service found on device");
-            //}
-
-            //serviceToControl.Value = value;
-
-            //if (serviceToControl.DependentServiceNameValues.Count > 0)
-            //{
-            //    // update dependent services
-            //}
+            return deviceToControl;
         }
 
         private void SetProperty(ThingsBase deviceToControl, string serviceName, object value)
@@ -65,6 +53,12 @@ namespace ContosoThingsCore
             }
         }
 
+        private object GetProperty(ThingsBase deviceToControl, string serviceName)
+        {
+            PropertyInfo prop = deviceToControl.GetType().GetProperty(serviceName, BindingFlags.Public | BindingFlags.Instance);
+            return prop.GetValue(deviceToControl);
+        }
+
         public object GetServiceValue(string deviceId, string serviceName)
         {
             ThingsBase deviceToControl = FindDevice(deviceId);
@@ -74,29 +68,7 @@ namespace ContosoThingsCore
                 throw new Exception("No device found");
             }
 
-            IThingService serviceToControl = FindService(deviceToControl, serviceName);
-
-            if (serviceToControl == null)
-            {
-                throw new Exception("No service found on device");
-            }
-
-            return serviceToControl.Value;
-        }
-
-        private IThingService FindService(ThingsBase deviceToControl, string serviceName)
-        {
-            IThingService serviceToControl = null;
-
-            foreach (IThingService service in deviceToControl.Services.Values)
-            {
-                if (service.Name.Equals(serviceName))
-                {
-                    serviceToControl = service;
-                }
-            }
-
-            return serviceToControl;
+            return GetProperty(deviceToControl, serviceName);
         }
 
         private ThingsBase FindDevice(string deviceId)
