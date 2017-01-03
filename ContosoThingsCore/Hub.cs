@@ -5,9 +5,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace ContosoThingsCore
 {
+    public class HubWrapper : TableEntity
+    {
+        public HubWrapper()
+        {
+            // for serialization
+        }
+
+        public HubWrapper(Hub w, string partition = "Test")
+        {
+            this.PartitionKey = partition;
+            this.RowKey = w.Id;
+            this.Data = w.Save();
+        }
+
+        public string Data { get; set; }
+
+        public Hub GetHub()
+        {
+            Hub w = Newtonsoft.Json.JsonConvert.DeserializeObject<Hub>(Data, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
+            return w;
+        }
+    }
+
     public class Hub
     {
         public static Hub Load(string toLoad)

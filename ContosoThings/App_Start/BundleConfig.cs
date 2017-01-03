@@ -12,18 +12,21 @@ namespace ContosoThings
         {
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                 "~/Scripts/jquery-1.10.2.min.js",
-                "~/Scripts/angular.min.js",
                 "~/Scripts/bootstrap.js",
-                "~/Scripts/modernizr-*"
+                "~/Scripts/angular.js",
+                "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
+                "~/Scripts/modernizr-*",
+                "~/Scripts/jquery.signalR-2.2.1.min.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                "~/Scripts/app/index.js"
                 ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.min.css",
-                 "~/Content/Site.css"));
+                 "~/Content/font-awesome.min.css",
+                 "~/Content/Site.css"
+                 ));
         }
     }
 }

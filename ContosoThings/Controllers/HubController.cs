@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace ContosoThings.Controllers
 {
-    public class HomeController : Controller
+    public class HubController : Controller
     {
-        // GET: Home
+        // GET: Hub
         public ActionResult Index()
         {
             return View();
