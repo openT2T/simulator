@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Web.Http;
 namespace ContosoThings.Controllers
 {
+    [SimpleAuthorization]
     public class HubsApiController : ApiController
     {
         internal IHubContext hub;
@@ -17,6 +18,20 @@ namespace ContosoThings.Controllers
         {
             // load the signalr hub which is used to signal to the webui something has changed
             hub = GlobalHost.ConnectionManager.GetHubContext("NotificationHub");
+        }
+
+        [HttpGet]
+        [Route("api/forceRefresh")]
+        public HttpResponseMessage ForceRefresh()
+        {
+            HubManager.Instance.Refresh();
+
+            // refresh the web ui
+            hub.Clients.All.refresh();
+
+            string hostName = ((System.Web.HttpContextWrapper)this.Request.Properties["MS_HttpContext"]).Request.UserHostName;
+
+            return Request.CreateResponse(hostName);
         }
 
         // GET: api/HubsApi
@@ -65,6 +80,25 @@ namespace ContosoThings.Controllers
 
             // add new thing to hub
             h.AddThing(thingToAdd);
+
+            // save the hub to table storage
+            HubManager.Instance.Save(h);
+
+            // refresh the web ui
+            hub.Clients.All.refresh();
+        }
+
+        [HttpPost]
+        [Route("api/removeThing")]
+        public void RemoveThing(HttpRequestMessage request)
+        {
+            string body = request.Content.ReadAsStringAsync().Result;
+            dynamic toRemove = Newtonsoft.Json.JsonConvert.DeserializeObject(body);
+
+            ContosoThingsCore.Hub h = HubManager.Instance.GetHub(toRemove.hubId.Value);
+
+            // remove the thing from the hub
+            h.RemoveThing(toRemove.thingId.Value);
 
             // save the hub to table storage
             HubManager.Instance.Save(h);

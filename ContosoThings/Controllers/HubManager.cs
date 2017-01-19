@@ -18,6 +18,13 @@ namespace ContosoThings.Controllers
         {
             Hubs = new List<Hub>();
 
+            Refresh();
+        }
+
+        public void Refresh()
+        {
+            Hubs.Clear();
+
             List<Hub> hubs = TableStorageProvider.GetAllHubs();
             Hubs.AddRange(hubs);
         }

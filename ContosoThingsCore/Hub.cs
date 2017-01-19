@@ -127,9 +127,17 @@ namespace ContosoThingsCore
             this.Things.Add(thing);
         }
 
-        public void RemoveThing(ThingsBase thing)
+        public void RemoveThing(string thingId)
         {
-            this.Things.Remove(thing);
+            bool done = false;
+            for (int i = 0; !done && i < this.Things.Count; i++)
+            {
+                if (this.Things[i].Id.Equals(thingId, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.Things.RemoveAt(i);
+                    done = true;
+                }
+            }
         }
 
         public override string ToString()

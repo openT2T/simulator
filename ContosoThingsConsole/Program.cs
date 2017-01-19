@@ -70,7 +70,7 @@ namespace ContosoThingsConsole
         static void Main(string[] args)
         {
             //CreateHub1();
-            CreateHub2();
+            //CreateHub2();
 
             //List<Hub> hubs = TableStorageProvider.GetAllHubs();
 

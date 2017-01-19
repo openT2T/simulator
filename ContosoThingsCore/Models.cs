@@ -25,6 +25,13 @@ namespace ContosoThingsCore
         public string Id { get; set; }
         public string Name { get; set; }
         public ThingsType ThingsType { get; set; }
+        public String ThingsTypeString
+        {
+            get
+            {
+                return ThingsType.ToString("G");
+            }
+        }
 
         public override string ToString()
         {
@@ -70,7 +77,24 @@ namespace ContosoThingsCore
     {
         public ContosoLightDimmable() : base() { }
 
-        public Int64 Dim { get; set; }
+        protected Int64 dim = 0;
+
+        public Int64 Dim
+        {
+            get { return dim; }
+            set
+            {
+                dim = value;
+                if (dim == 0)
+                {
+                    this.Switch = false;
+                }
+                else
+                {
+                    this.Switch = true;
+                }
+            }
+        }
 
         public ContosoLightDimmable(string name) : base(name)
         {

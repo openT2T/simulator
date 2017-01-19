@@ -1,4 +1,4 @@
-﻿var mainApp = angular.module('mainApp', ['ui.bootstrap']);
+﻿var mainApp = angular.module('mainApp', ['ui.bootstrap', 'rzModule', 'ui.slider']);
 
 mainApp.controller('ModalInstanceCtrl', ['$uibModalInstance', 'items', function ($uibModalInstance, items) {
     var $ctrl = this;
@@ -18,6 +18,9 @@ mainApp.controller('ModalInstanceCtrl', ['$uibModalInstance', 'items', function 
 
 mainApp.controller('MainCtrl', ['$scope', '$http', '$window', '$q', '$location', '$uibModal',
 function ($scope, $http, $window, $q, $location, $uibModal) {
+
+    $scope.thingPopoverDetails = "thingPopoverDetails.html";
+
     var $ctrl = this;
     $ctrl.items = ['item1', 'item2', 'item3'];
 
@@ -67,10 +70,31 @@ function ($scope, $http, $window, $q, $location, $uibModal) {
     // calls the web api to load the hubs
     $scope.loadHubs = function () {
         var url = "/api/HubsApi";
+
+        var savedHubDetailId = undefined;
+        if ($scope.hubDetail) {
+            savedHubDetailId = $scope.hubDetail.Id;
+        }
+
         $http.get(url).success(function (hubs) {
             $scope.hubs = hubs;
-            if ($scope.hubs.length > 0) {
-                $scope.selectHub($scope.hubs[0]);
+            var toSelect = undefined;
+
+            for (var i = 0; !toSelect &&  i < $scope.hubs.length; i++) {
+                if ($scope.hubs[i].Id === savedHubDetailId) {
+                    toSelect = $scope.hubs[i];
+                }
+            }
+
+            // if we didnt have a previous hub, select first by default
+            if ($scope.hubs.length > 0 && !toSelect) {
+                toSelect = $scope.hubs[0];
+                console.log(toSelect);
+            }
+
+            // select a hub
+            if (toSelect) {
+                $scope.selectHub(toSelect);
             }
         });
     };
@@ -99,7 +123,6 @@ function ($scope, $http, $window, $q, $location, $uibModal) {
         $http(postObj).success(function (data, status) {
             console.log(data);
             console.log(status);
-            thing.Dim = data.Dim;
         }).error(function (data, status) {
             console.log(data);
             console.log(status);
@@ -108,6 +131,37 @@ function ($scope, $http, $window, $q, $location, $uibModal) {
 
     $scope.selectHub = function (hub) {
         $scope.hubDetail = hub;
+    }
+
+    $scope.removeItem = function (hubId, thing) {
+
+        if (!confirm('Are you sure you want to remove thing "' + thing.Name + '"?')) {
+            return;
+        }
+
+        console.log(thing);
+        var postData = {
+            hubId: $scope.hubDetail.Id,
+            thingId: thing.Id
+        };
+
+        var postObj = {
+            url: '/api/removeThing',
+            method: 'POST',
+            data: postData
+        }
+
+        console.log(postData);
+        console.log(postObj);
+
+        $http(postObj).success(function (data, status) {
+            console.log(data);
+            console.log(status);
+            thing.Dim = data.Dim;
+        }).error(function (data, status) {
+            console.log(data);
+            console.log(status);
+        });
     }
 
     $scope.switchOff = function (hubId, thing) {

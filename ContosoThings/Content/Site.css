@@ -125,6 +125,10 @@ small {
     height:175px;
 }
 
+.ct-thing-icon {
+    font-size:20px;
+}
+
 .ct-thing-name {
     margin-left:auto;
     margin-right:auto;
@@ -138,12 +142,68 @@ small {
 .ct-action {
     text-align:center;
     vertical-align:middle;
-    min-height:140px;
+    min-height:120px;
     min-width:150px;
     max-width:150px;
-    max-height:140px;
+    max-height:120px;
     margin:auto;
     padding:5px;
+    display:flex;
+    flex-direction:column;
+}
+
+.ct-color-text {
+
+}
+
+.ct-color-display {
+    width:15px;
+    height:15px;
+    display:inline-block;
+}
+
+.ct-switch > label {
+    padding: 2px 12px;
+}
+
+.ct-admin-actions {
+    min-width:100px;
+    width:100%;
+    align-self:flex-end;
+    text-align:right;
+    flex: 1 1 auto;
+    display:flex;
+    flex-direction:row-reverse;
+    align-items:flex-end; 
+}
+
+.ct-admin-action {
+    margin: 2px;
+    cursor: pointer;
+}
+
+.ct-admin-actions,
+.ct-slider, 
+.ct-color-text
+{
+    visibility: hidden;
+}
+
+.ct-thing:hover .ct-color-text,
+.ct-thing:hover .ct-admin-actions,
+.ct-thing:hover .ct-slider {
+    visibility: visible;
+}
+
+.ct-switch {
+    margin-left: auto;
+    margin-right: auto;
+    padding:5px;
+}
+
+.ct-slider-container {
+    margin:5px;
+    min-width:100px;
 }
 
 .dim-percentage {
