@@ -20,14 +20,15 @@ namespace ContosoThings.Controllers
             hub = GlobalHost.ConnectionManager.GetHubContext("NotificationHub");
         }
 
+        /// <summary>
+        /// Forces the in memory cache to load the data in table storage
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/forceRefresh")]
         public HttpResponseMessage ForceRefresh()
         {
             HubManager.Instance.Refresh();
-
-            // refresh the web ui
-            hub.Clients.All.refresh();
 
             string hostName = ((System.Web.HttpContextWrapper)this.Request.Properties["MS_HttpContext"]).Request.UserHostName;
 
@@ -45,11 +46,17 @@ namespace ContosoThings.Controllers
             return HubManager.Instance.GetHub(id);
         }
 
-        public object GetService(string id, string deviceId, string serviceName)
+        public object GetThing(string id, string deviceId)
         {
             ContosoThingsCore.Hub h = HubManager.Instance.GetHub(id);
-            return h.GetServiceValue(deviceId, serviceName);
+            return h.GetDevice(deviceId);
         }
+
+        //public object GetService(string id, string deviceId, string serviceName)
+        //{
+        //    ContosoThingsCore.Hub h = HubManager.Instance.GetHub(id);
+        //    return h.GetServiceValue(deviceId, serviceName);
+        //}
 
         [HttpPost]
         [Route("api/addThing")]
@@ -76,6 +83,10 @@ namespace ContosoThings.Controllers
             else if (toAdd.thingType == 3)
             {
                 thingToAdd = new ContosoLightColor(toAdd.name.Value);
+            }
+            else if (toAdd.thingType == 4)
+            {
+                thingToAdd = new ContosoThermostat(toAdd.name.Value);
             }
 
             // add new thing to hub

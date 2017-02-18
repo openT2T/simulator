@@ -25,9 +25,9 @@ namespace ContosoThingsConsole
             h.AddThing(cl2);
             h.AddThing(bl1);
 
-            h.Control(cl1.Id, AllServices.SwitchServiceName, true);
-            h.Control(bl1.Id, AllServices.SwitchServiceName, true);
-            h.Control(bl1.Id, AllServices.DimServiceName, 18);
+            h.Control(cl1.Id, "Switch", true);
+            h.Control(bl1.Id, "Switch", true);
+            h.Control(bl1.Id, "Dim", 18);
 
             string saveString = h.Save();
             Console.WriteLine(saveString);

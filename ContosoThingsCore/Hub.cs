@@ -9,6 +9,9 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace ContosoThingsCore
 {
+    /// <summary>
+    /// Wrapper object for hubs which gets stored in the table store
+    /// </summary>
     public class HubWrapper : TableEntity
     {
         public HubWrapper()
@@ -35,6 +38,9 @@ namespace ContosoThingsCore
         }
     }
 
+    /// <summary>
+    /// Object which has devices, add/remove/control from this main object.
+    /// </summary>
     public class Hub
     {
         public static Hub Load(string toLoad)
@@ -57,7 +63,14 @@ namespace ContosoThingsCore
         public string Name { get; set; }
         public List<ThingsBase> Things { get; set; }
 
-        public ThingsBase Control(string deviceId, string serviceName, object value)
+        /// <summary>
+        /// Main method which allows you to control devices.
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public ThingsBase Control(string deviceId, string propertyName, object value)
         {
             ThingsBase deviceToControl = FindDevice(deviceId);
 
@@ -66,27 +79,33 @@ namespace ContosoThingsCore
                 throw new Exception("No device found");
             }
 
-            SetProperty(deviceToControl, serviceName, value);
+            SetProperty(deviceToControl, propertyName, value);
 
             return deviceToControl;
         }
 
-        private void SetProperty(ThingsBase deviceToControl, string serviceName, object value)
+        /// <summary>
+        /// Helper method which uses reflection to change the property name
+        /// </summary>
+        /// <param name="deviceToControl"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        private void SetProperty(ThingsBase deviceToControl, string propertyName, object value)
         {
-            PropertyInfo prop = deviceToControl.GetType().GetProperty(serviceName, BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo prop = deviceToControl.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
             if (null != prop && prop.CanWrite)
             {
                 prop.SetValue(deviceToControl, value, null);
             }
         }
 
-        private object GetProperty(ThingsBase deviceToControl, string serviceName)
+        private object GetProperty(ThingsBase deviceToControl, string propertyName)
         {
-            PropertyInfo prop = deviceToControl.GetType().GetProperty(serviceName, BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo prop = deviceToControl.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
             return prop.GetValue(deviceToControl);
         }
 
-        public object GetServiceValue(string deviceId, string serviceName)
+        public object GetDevice(string deviceId)
         {
             ThingsBase deviceToControl = FindDevice(deviceId);
 
@@ -95,7 +114,7 @@ namespace ContosoThingsCore
                 throw new Exception("No device found");
             }
 
-            return GetProperty(deviceToControl, serviceName);
+            return deviceToControl;
         }
 
         private ThingsBase FindDevice(string deviceId)
@@ -114,6 +133,10 @@ namespace ContosoThingsCore
             return deviceToControl;
         }
 
+        /// <summary>
+        /// Returns a JSON representation of the hub and all it's devices.
+        /// </summary>
+        /// <returns></returns>
         public string Save()
         {
             return JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented, new JsonSerializerSettings

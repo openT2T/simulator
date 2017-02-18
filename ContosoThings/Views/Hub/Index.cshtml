@@ -3,7 +3,7 @@
     ViewBag.Title = "Hubs";
 }
 
-<h2>Hubs<small> Displays information about the hubs in the system</small></h2>
+<h2>Hubs<small> Displays information about hubs in the system</small></h2>
 
 <div ng-app="mainApp" ng-controller="MainCtrl" class="main-app">
     <script type="text/ng-template" id="addThing.html">
@@ -19,6 +19,7 @@
                     <option value="1">Light (on/off)</option>
                     <option value="2">Light (on/off/dim)</option>
                     <option value="3">Light (on/off/dim/color)</option>
+                    <option value="4">Thermostat</option>
                 </select>
             </p>
         </div>
@@ -42,22 +43,31 @@
             </div>
         </div>
 
+        @*Details of chosen hub*@
         <div class="ct-hub-detail" ng-if="hubDetail">
-            <div class="ct-header-2">1
+
+            @*Hub Details Header*@
+            <div class="ct-header-2">
                 {{hubDetail.Name}} 
                 <small>({{hubDetail.Things.length}} things) - {{hubDetail.Id}}</small>
                 <i ng-click="addThingShowDialog(hubDetail)" class="fa fa-plus" aria-hidden="true"></i>
                 {{ selected }}
             </div>
 
+            @*Things Container*@
             <div class="ct-thing-container">
                 <div class="ct-thing" ng-repeat="thing in hubDetail.Things">
+                    @*Name of Thing*@
                     <div class="ct-thing-name">
                         <i class="fa fa-plug ct-thing-icon" aria-hidden="true" ng-show="thing.ThingsType == 0"></i>
                         <i class="fa fa-lightbulb-o ct-thing-icon" aria-hidden="true" ng-show="thing.ThingsType == 1 || thing.ThingsType == 2 || thing.ThingsType == 3"></i>
+                        <i class="fa fa-thermometer-half ct-thing-icon" aria-hidden="true" ng-show="thing.ThingsType == 4"></i>
                         {{thing.Name}}
                     </div>
+
+                    @*Actions Section*@
                     <div class="ct-action">
+                        @*Switch or Simple Light*@
                         <div class="btn-group ct-switch" data-toggle="buttons" ng-if="thing.ThingsType === 0 || thing.ThingsType === 1 || thing.ThingsType === 2 || thing.ThingsType === 3">
                             <label class="btn btn-default" ng-class="{active:!thing.Switch}" ng-click="switchOff(hubDetail.Id, thing);">
                                 <input type="radio" name="options" id="option1" autocomplete="off">Off
@@ -67,18 +77,42 @@
                             </label>
                         </div>
 
+                        @*Dimmable Light*@
                         <div class="ct-slider-container" ng-if="thing.ThingsType === 2">
                             <div class="text-xs-center dim-percentage">{{thing.Dim}}%</div>
                             <div ui-slider class="ct-slider" min="0" max="100" ng-model="thing.Dim" ng-mouseup="dim(hubDetail.Id, thing)"></div>
                         </div>
 
+                        @*Colored Light*@
                         <div class="ct-slider-container" ng-if="thing.ThingsType === 3">
                             <div class="text-xs-center dim-percentage">
                                 {{thing.Dim}}%
                                 <span class="ct-color-display" ng-style="{'background-color': thing.ColorRGB}"></span>
                             </div>
-                            <div ui-slider class="ct-slider" min="0" max="100" ng-model="thing.Dim" ng-mouseup="dim(hubDetail.Id, thing)"></div>
+                            <div ui-slider class="ct-slider" min="0" max="100" ng-model="thing.Dim" ng-mouseup="dim(hubDetail.Id, thing, 'Dim')"></div>
                             <span class="ct-color-text">{{thing.ColorRGB}}</span>
+                        </div>
+
+
+                        @*Thermostat*@
+                        <div class="ct-slider-container" ng-if="thing.ThingsType === 4">
+                            <div class="text-xs-center dim-percentage">
+                                {{thing.CurrentTemperature}} F
+                            </div>
+                            <div ui-slider class="ct-slider" min="58" max="90" ng-model="thing.CurrentTemperature" ng-mouseup="dim(hubDetail.Id, thing, 'CurrentTemperature')"></div>
+
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="thermostatMode{{thing.Id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    {{thing.ModeText}}
+                                </button>
+                                 <ul class="dropdown-menu" aria-labelledby="thermostatMode{{thing.Id}}">
+                                     <li><a href="#" ng-click="mode(hubDetail.Id, thing, 0);">Off</a></li>
+                                     <li><a href="#" ng-click="mode(hubDetail.Id, thing, 1);">Heat</a></li>
+                                     <li><a href="#" ng-click="mode(hubDetail.Id, thing, 2);">Cool</a></li>
+                                     <li><a href="#" ng-click="mode(hubDetail.Id, thing, 3);">HeatCool</a></li>
+                                </ul>
+                            </div>
+                            Target <input class="ct-small-inputtext" type="text" ng-model="thing.TargetTemperature" ng-model-options="{updateOn: 'blur'}" ng-change="dim(hubDetail.Id, thing, 'TargetTemperature');"/>
                         </div>
 
                         <script type="text/ng-template" id="thingPopoverDetails.html">

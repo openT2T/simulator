@@ -14,22 +14,63 @@ namespace ContosoThings.Controllers
         static HubManager instance = new HubManager();
         public static HubManager Instance { get { return instance; } }
 
+        internal Microsoft.AspNet.SignalR.IHubContext hub;
         private HubManager()
         {
-            Hubs = new List<Hub>();
+            // load the signalr hub which is used to signal to the webui something has changed
+            hub = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext("NotificationHub");
 
             Refresh();
         }
 
+        /// <summary>
+        /// Refreshes the in memory cache with the data in table storage
+        /// </summary>
         public void Refresh()
         {
-            Hubs.Clear();
-
-            List<Hub> hubs = TableStorageProvider.GetAllHubs();
-            Hubs.AddRange(hubs);
+            Refresh(TimeSpan.Zero);
         }
 
-        public List<Hub> Hubs { get; }
+        /// <summary>
+        /// Refreshes the in memory cache with the data in table storage
+        /// </summary>
+        public void RefreshDefaultWait()
+        {
+            // by default allow only two minute old data
+            Refresh(TimeSpan.FromMinutes(2));
+        }
+
+        /// <summary>
+        /// Refreshes the in memory cache with the data in table storage
+        /// </summary>
+        /// <param name="ageAllowed"></param>
+        public void Refresh(TimeSpan ageAllowed)
+        {
+            if (LastLoaded + ageAllowed < DateTime.Now)
+            {
+                this.hubs.Clear();
+
+                List<ContosoThingsCore.Hub> hubs = TableStorageProvider.GetAllHubs();
+                this.hubs.AddRange(hubs);
+
+                LastLoaded = DateTime.Now;
+
+                // refresh the web ui
+                hub.Clients.All.refresh();
+            }
+        }
+
+        public DateTime LastLoaded = DateTime.MinValue;
+
+        protected List<Hub> hubs = new List<Hub>();
+        public List<Hub> Hubs
+        {
+            get
+            {
+                RefreshDefaultWait();
+                return this.hubs;
+            }
+        }
 
         public Hub GetHub(string hubId)
         {

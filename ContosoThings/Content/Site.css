@@ -214,6 +214,10 @@ small {
     display:inline-block;
 }
 
+.ct-small-inputtext {
+    width:40px;
+
+}
 
 .ng-modal-overlay {
   /* A dark translucent div that covers the whole screen */

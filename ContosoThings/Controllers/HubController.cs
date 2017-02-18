@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace ContosoThings.Controllers
 {
+    [Authorize]
     public class HubController : Controller
     {
         // GET: Hub

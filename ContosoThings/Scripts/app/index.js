@@ -176,13 +176,20 @@ function ($scope, $http, $window, $q, $location, $uibModal) {
         $scope.setThingProperty(hubId, thing, "Switch", true);
     }
 
-    $scope.dim = function (hubId, thing) {
-        console.log("Set " + thing.Name + " to " + thing.Dim);
+    $scope.dim = function (hubId, thing, propertyName) {
+        console.log("Set " + thing.Name + " to " + thing[propertyName]);
 
-        $scope.setThingProperty(hubId, thing, "Dim", parseInt(thing.Dim));
+        $scope.setThingProperty(hubId, thing, propertyName, parseInt(thing[propertyName]));
     }
 
-    $scope.setThingProperty = function(hubId, thing, propertyName, value) {
+
+    $scope.mode = function (hubId, thing, newMode) {
+        console.log("Change mode " + newMode);
+
+        $scope.setThingProperty(hubId, thing, "Mode", parseInt(newMode));
+    }
+
+    $scope.setThingProperty = function (hubId, thing, propertyName, value) {
         var postData = {
             id: hubId,
             deviceId: thing.Id,

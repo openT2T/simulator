@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ContosoThingsCore
 {
+    /// <summary>
+    /// Currently supported types
+    /// </summary>
     public enum ThingsType
     {
         Switch,
@@ -15,6 +18,9 @@ namespace ContosoThingsCore
         Thermostat
     }
 
+    /// <summary>
+    /// Base class for all things
+    /// </summary>
     public abstract class ThingsBase
     {
         public ThingsBase()
@@ -130,18 +136,48 @@ namespace ContosoThingsCore
 
     public class ContosoThermostat : ThingsBase
     {
+        public enum ThermostatModes
+        {
+            Off,
+            Heat,
+            Cool,
+            HeatCool
+        }
+
         public ContosoThermostat(string name)
         {
             ThingsType = ThingsType.Thermostat;
             this.Name = name;
 
+            CurrentTemperature = 65;
+            TargetTemperature = 72;
+            TargetTemperatureLow = 62;
+            TargetTemperatureHigh = 75;
+            Mode = (Int64)ThermostatModes.Heat;
         }
 
-        public int CurrentTemperature { get; set; }
-        public int TargetTemperature { get; set; }
-        public int TargetTemperatureLow { get; set; }
-        public int TargetTemperatureHigh { get; set; }
-        public string Mode { get; set; }
+        /// <summary>
+        /// Temperature is managed in F
+        /// </summary>
+        public Int64 CurrentTemperature { get; set; }
+        public Int64 TargetTemperature { get; set; }
+        public Int64 TargetTemperatureLow { get; set; }
+        public Int64 TargetTemperatureHigh { get; set; }
+        public Int64 Mode { get; set; }
+        public string ModeText
+        {
+            get
+            {
+                ThermostatModes m = (ThermostatModes)Mode;
+                return m.ToString();
+            }
+        }
+
+        public Int64 Humidity { get; protected set; }
+        public bool AwayMode { get; set; }
+        public Int64 AwayTemperatureLow { get; set; }
+        public Int64 AwayTemperatureHigh { get; set; }
+        public bool FanActive { get; protected set; }
 
         public override string ToString()
         {
@@ -151,7 +187,7 @@ namespace ContosoThingsCore
             sb.Append("Target : ").AppendLine(TargetTemperature.ToString());
             sb.Append("TargetL: ").AppendLine(TargetTemperatureLow.ToString());
             sb.Append("TargetH: ").AppendLine(TargetTemperatureHigh.ToString());
-            sb.Append("Mode   : ").Append(Mode);
+            sb.Append("Mode   : ").Append((ThermostatModes)Mode);
             return sb.ToString();
         }
     }
