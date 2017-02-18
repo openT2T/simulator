@@ -5,6 +5,6 @@ This repo represents a website which can be configured to run as a simulator.  I
 Deploy the website to a domain of your choice.  Create an initial hub and add some devices using the admin interface.  Install the contosothings translators and using the cli/reference app begin to control the devices.
 
 # Limitations
-Subscriptions/notifications are not supported yet
-Not all Thermostat properties are editable in the ui
-More devices are in progress
+. Subscriptions/notifications are not supported yet
+. Not all Thermostat properties are editable in the ui
+. More devices are in progress
