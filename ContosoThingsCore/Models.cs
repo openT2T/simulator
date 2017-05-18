@@ -123,6 +123,7 @@ namespace ContosoThingsCore
         public ContosoLightColor(string name) : base(name)
         {
             ThingsType = ThingsType.LightColor;
+            ColorRGB = "#FF0000";
         }
 
         public override string ToString()

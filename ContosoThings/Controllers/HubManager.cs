@@ -15,10 +15,14 @@ namespace ContosoThings.Controllers
         public static HubManager Instance { get { return instance; } }
 
         internal Microsoft.AspNet.SignalR.IHubContext hub;
+        internal TableStorageProvider storageProvider;
         private HubManager()
         {
             // load the signalr hub which is used to signal to the webui something has changed
             hub = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext("NotificationHub");
+            
+            string TableStorageConnectionString = System.Configuration.ConfigurationManager.AppSettings["TableStorageConnectionString"];
+            storageProvider = new TableStorageProvider(TableStorageConnectionString);
 
             Refresh();
         }
@@ -50,7 +54,7 @@ namespace ContosoThings.Controllers
             {
                 this.hubs.Clear();
 
-                List<ContosoThingsCore.Hub> hubs = TableStorageProvider.GetAllHubs();
+                List<ContosoThingsCore.Hub> hubs = storageProvider.GetAllHubs();
                 this.hubs.AddRange(hubs);
 
                 LastLoaded = DateTime.Now;
@@ -87,7 +91,7 @@ namespace ContosoThings.Controllers
 
         public void Save(Hub h)
         {
-            TableStorageProvider.AddHub(h);
+            storageProvider.AddHub(h);
         }
     }
 }

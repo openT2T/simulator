@@ -6,38 +6,33 @@ using System.Linq;
 using System.Web;
 using ContosoThingsCore;
 
+
 namespace ContosoThingsCore.Providers
 {
     public class TableStorageProvider
     {
-        static string lockObject = "lock";
+        string lockObject = "lock";
+        CloudStorageAccount storageAccount = null;
+        CloudTableClient tableClient = null;
+        CloudTable table = null;
 
-        static string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=contosothings;AccountKey=J7+5GGTqfZIEG2pE+UGRZ1vgw9tBWPcWfsYC+GVH7hFebF62Vkb4U4a9L9M1S3y4Ecuuag68wUDKz/3MXodOWQ==";
 
-        static CloudStorageAccount storageAccount = null;
-        static CloudTableClient tableClient = null;
-        static CloudTable table = null;
-
-        static TableStorageProvider()
+        public TableStorageProvider(string TableStorageConnectionString)
         {
             // Retrieve the storage account from the connection string.
-            storageAccount = CloudStorageAccount.Parse(ConnectionString);
+            storageAccount = CloudStorageAccount.Parse(TableStorageConnectionString);
 
             // Create the table client.
             tableClient = storageAccount.CreateCloudTableClient();
-
             
-
-            // Create the CloudTable object that represents the "people" table.
-            table = tableClient.GetTableReference("Hubs");
-
+            // Create the CloudTable object that represents the "hubs" table.
+            table = tableClient.GetTableReference("hubs");
             if (!table.Exists())
             {
                 table.Create();
             }
         }
-
-        public static void AddHub(Hub hub, string partition = "Test")
+        public void AddHub(Hub hub, string partition = "Test")
         {
             lock (lockObject)
             {
@@ -51,7 +46,7 @@ namespace ContosoThingsCore.Providers
             }
         }
 
-        public static List<Hub> GetAllHubs(string partition = "Test")
+        public List<Hub> GetAllHubs(string partition = "Test")
         {
             List<Hub> toReturn = new List<Hub>();
 
@@ -67,7 +62,7 @@ namespace ContosoThingsCore.Providers
             return toReturn;
         }
 
-        public static Hub GetHub(string rowKey, string partition = "Test")
+        public Hub GetHub(string rowKey, string partition = "Test")
         {
             // Create a retrieve operation that takes a customer entity.
             TableOperation retrieveOperation = TableOperation.Retrieve<HubWrapper>(partition, rowKey);
@@ -86,7 +81,16 @@ namespace ContosoThingsCore.Providers
                 return null;
             }
         }
-        public static void DeleteHub(string rowKey, string partition)
+        public void DeleteHub(Hub hub)
+        {
+            lock (lockObject)
+            {
+                HubWrapper hubWrapper = new HubWrapper(hub);
+                DeleteHub(hubWrapper.RowKey);
+            }
+        }
+
+        public void DeleteHub(string rowKey, string partition = "Test")
         {
             lock (lockObject)
             {
