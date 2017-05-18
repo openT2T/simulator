@@ -79,15 +79,24 @@
 
                         @*Dimmable Light*@
                         <div class="ct-slider-container" ng-if="thing.ThingsType === 2">
-                            <div class="text-xs-center dim-percentage">{{thing.Dim}}%</div>
-                            <div ui-slider class="ct-slider" min="0" max="100" ng-model="thing.Dim" ng-mouseup="dim(hubDetail.Id, thing)"></div>
+                            <div class="text-xs-center dim-percentage">
+                                {{thing.Dim}}%
+                            </div>
+                            <div ui-slider class="ct-slider" min="0" max="100" ng-model="thing.Dim" ng-mouseup="dim(hubDetail.Id, thing, 'Dim')"></div>
                         </div>
 
                         @*Colored Light*@
                         <div class="ct-slider-container" ng-if="thing.ThingsType === 3">
-                            <div class="text-xs-center dim-percentage">
+                            <div class="dropdown">
                                 {{thing.Dim}}%
-                                <span class="ct-color-display" ng-style="{'background-color': thing.ColorRGB}"></span>
+                                <button class="btn btn-default dropdown-toggle" ng-style="{'background-color':thing.ColorRGB}" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
+                                <ul class="dropdown-menu" >
+                                    <li><a href="#" ng-click="setThingProperty(hubDetail.Id, thing, 'ColorRGB','#ff0000');"><div class="ct-color-display" ng-style="{'background-color':'#ff0000'}"></div>Red</a></li>
+                                    <li><a href="#" ng-click="setThingProperty(hubDetail.Id, thing, 'ColorRGB','#0000ff');"><div class="ct-color-display" ng-style="{'background-color':'#0000ff'}"></div>Blue</a></li>
+                                    <li><a href="#" ng-click="setThingProperty(hubDetail.Id, thing, 'ColorRGB','#ffff00');"><div class="ct-color-display" ng-style="{'background-color':'#ffff00'}"></div>Yellow</a></li>
+                                    <li><a href="#" ng-click="setThingProperty(hubDetail.Id, thing, 'ColorRGB','#00ff00');"><div class="ct-color-display" ng-style="{'background-color':'#00ff00'}"></div>Green</a></li>
+                                    <li><a href="#" ng-click="setThingProperty(hubDetail.Id, thing, 'ColorRGB','#ffffff');"><div class="ct-color-display" ng-style="{'background-color':'#ffffff'}"></div>White</a></li>
+                                </ul>
                             </div>
                             <div ui-slider class="ct-slider" min="0" max="100" ng-model="thing.Dim" ng-mouseup="dim(hubDetail.Id, thing, 'Dim')"></div>
                             <span class="ct-color-text">{{thing.ColorRGB}}</span>

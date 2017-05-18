@@ -146,7 +146,7 @@ namespace ContosoThings.Controllers
             hub.Clients.All.refresh();
 
             // update hub in storage
-            TableStorageProvider.AddHub(h);
+            HubManager.Instance.Save(h);
 
             return newThing;
         }

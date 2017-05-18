@@ -157,9 +157,13 @@ small {
 }
 
 .ct-color-display {
-    width:15px;
-    height:15px;
-    display:inline-block;
+    width: 15px;
+    height: 10px;
+    display: inline-block;
+    border-width: 1px;
+    border-color: darkgray;
+    border-style: solid;
+    margin-right: 5px;
 }
 
 .ct-switch > label {

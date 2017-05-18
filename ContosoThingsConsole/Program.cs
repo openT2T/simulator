@@ -11,8 +11,10 @@ namespace ContosoThingsConsole
 {
     class Program
     {
+        // !Must be configured! - TableStorageConnectionString is the Connection String for an Azure storage account where the hubs and devices are stored 
+       static string TableStorageConnectionString = "";
 
-        public static void CreateHub1()
+        public static void CreateHub1(TableStorageProvider storageProvider)
         {
             ContosoSwitch cs1 = new ContosoSwitch("Humidifier");
             ContosoLight cl1 = new ContosoLight("Family Lamp 1");
@@ -36,15 +38,15 @@ namespace ContosoThingsConsole
             //Console.WriteLine(h.ToString());
 
             File.WriteAllText("hub.json", saveString);
-            TableStorageProvider.AddHub(h);
-
+            storageProvider.AddHub(h);
+ 
             Hub h2 = Hub.Load(saveString);
 
             Console.WriteLine(h2);
         }
 
 
-        public static void CreateHub2()
+        public static void CreateHub2(TableStorageProvider storageProvider)
         {
             Hub h = new Hub("Contoso Big Hub");
 
@@ -62,18 +64,19 @@ namespace ContosoThingsConsole
             h.AddThing(new ContosoLightDimmable("Guest Bedroom Lamp"));
             h.AddThing(new ContosoLightDimmable("Guest Bedroom Chandelier"));
 
-            TableStorageProvider.AddHub(h);
+            storageProvider.AddHub(h);
 
             Console.WriteLine(h);
         }
 
         static void Main(string[] args)
         {
-            //CreateHub1();
-            //CreateHub2();
+            //TableStorageProvider storageProvider = new TableStorageProvider(TableStorageConnectionString);
+            //CreateHub1(storageProvider);
+            //CreateHub2(storageProvider);
 
-            //List<Hub> hubs = TableStorageProvider.GetAllHubs();
-
+            //List<Hub> hubs = storageProvider.GetAllHubs();
+            
             Console.WriteLine("done");
             Console.ReadLine();
         }
